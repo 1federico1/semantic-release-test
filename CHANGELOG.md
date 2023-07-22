@@ -1,5 +1,12 @@
 # Semantic Versioning Changelog
 
+## [1.0.1](https://github.com/1federico1/semantic-release-test/compare/v1.0.0...v1.0.1) (2023-07-22)
+
+
+### Bug Fixes
+
+* **test:** bump fix version test ([fe72a5f](https://github.com/1federico1/semantic-release-test/commit/fe72a5f9348db7dd437d13c987d2c08de92cfaaa))
+
 # 1.0.0 (2023-07-22)
 
 
