@@ -1,5 +1,4 @@
-name: Java Semantic Release Example
-
+name: semantic release
 on:
   push:
     branches:
