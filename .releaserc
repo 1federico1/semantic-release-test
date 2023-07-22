@@ -1,5 +1,6 @@
 {
      "branches": "main",
+     "repositoryUrl": "https://github.com/1federico1/semantic-release-test",
      "debug": "true",
      "plugins": [
         "@semantic-release/commit-analyzer",
