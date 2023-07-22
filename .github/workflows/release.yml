@@ -19,16 +19,9 @@ jobs:
         uses: actions/setup-java@v2
         with:
           java-version: '17' # Replace with your desired Java version
+          distribution: 'adopt' # Replace with your desired distribution (e.g., 'adopt', 'adopt-openj9', 'zulu', etc.)
 
       - name: Update pom.xml version
-        run: |
-          # Replace the following line with a command to update the version in your pom.xml file
-          # For example, you can use `mvn versions:set -DnewVersion=${{ env.NEW_VERSION }}` if you have the Maven Versions Plugin
-          echo "Updating pom.xml with version ${{ env.NEW_VERSION }}"
-
-      - name: Create tag and release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           # Determine the new version based on the previous tag and commit history
           NEW_VERSION=$(git describe --tags --abbrev=0)
@@ -51,10 +44,15 @@ jobs:
 
           echo "New version: ${NEW_VERSION}"
 
-          # Update the pom.xml file again, if needed, with the new version
-          # Replace the following line with a command to update the version in your pom.xml file
-          # For example, you can use `mvn versions:set -DnewVersion=${NEW_VERSION}` if you have the Maven Versions Plugin
-          echo "Updating pom.xml with version ${NEW_VERSION}"
+          # Update the pom.xml file with the new version using xmlstarlet
+          XMLSTARLET_CMD=$(command -v xmlstarlet || echo "xmlstarlet not found, please install it.")
+          if [[ -z "$XMLSTARLET_CMD" ]]; then
+            echo "$XMLSTARLET_CMD"
+            exit 1
+          fi
+
+          # Replace the version in the pom.xml file with the new version
+          $XMLSTARLET_CMD ed --inplace -N x="http://maven.apache.org/POM/4.0.0" -u "/x:project/x:version" -v "${NEW_VERSION}" pom.xml
 
           # Commit and push the updated pom.xml file
           git config --local user.email "action@github.com"
